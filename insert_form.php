@@ -22,8 +22,8 @@
      * Time: 17:35
      */
     //DB接続
-    require_once '/DbManager.php';
-    require_once '/Encode.php';
+    require_once 'DbManager.php';
+    require_once 'Encode.php';
 
     if(!isset($_POST['name']) && !isset($_POST['contents'])){
         echo "名前、本文を入力してください";
@@ -36,8 +36,9 @@
            echo "名前は30文字以内で入力してください";
        }else if(mb_strlen($_POST['contents']) > 140){
            echo "本文は140文字以内で入力してください";
+       }else if(mb_strlen($_POST['name']) == 0 || mb_strlen($_POST['contents']) == 0) {
+           echo "未入力の項目があります";
        }else{
-
             try {
                 $db = getDb();
                 $name = e($_POST['name']);
