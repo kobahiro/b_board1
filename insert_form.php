@@ -24,36 +24,38 @@
     //DB接続
     require_once 'DbManager.php';
     require_once 'Encode.php';
+    if (isset($_POST["name"])) {
+        //$str = $_POST['name'];
 
-    if(!isset($_POST['name']) && !isset($_POST['contents'])){
-        echo "名前、本文を入力してください";
-    }else if(!isset($_POST['contents'])){
-        echo "本文を入力してください";
-    }else if(!isset($_POST['name'])) {
-        echo "名前を入力してください";
-    }else{
-       if(mb_strlen($_POST['name']) > 30){
-           echo "名前は30文字以内で入力してください";
-       }else if(mb_strlen($_POST['contents']) > 140){
-           echo "本文は140文字以内で入力してください";
-       }else if(mb_strlen($_POST['name']) == 0 || mb_strlen($_POST['contents']) == 0) {
-           echo "未入力の項目があります";
-       }else{
-            try {
-                $db = getDb();
-                $name = e($_POST['name']);
-                $contents = e($_POST['contents']);
-                $stt = $db->prepare('INSERT INTO post(name,contents) VALUES(:name, :contents)');
+        if (strval($_POST['name']) == '' || strval($_POST['contents']) == '') {
+            echo "未入力の項目があります";
+        }else if (preg_match("/[　 \t\r\n]+/u", $_POST['name']) || preg_match("/[　 \t\r\n]+/u", $_POST['contents'])) {
+            echo "不正な入力があります";
+        }else {
 
-                $stt->bindValue(':name', $name);
-                $stt->bindValue(':contents', $contents);
-                $stt->execute();
-                $db = NULL;
-            } catch (PDOException $e) {
-                die("エラーメッセージ：{$e->getMessage()}");
+            if (mb_strlen($_POST['name']) > 30) {
+                echo "名前は30文字以内で入力してください";
+            } else if (mb_strlen($_POST['contents']) > 140) {
+                echo "本文は140文字以内で入力してください";
+            } else {
+                try {
+                    $db = getDb();
+                    $name = e($_POST['name']);
+                    $contents = e($_POST['contents']);
+                    $stt = $db->prepare('INSERT INTO post(name,contents) VALUES(:name, :contents)');
+
+                    $stt->bindValue(':name', $name);
+                    $stt->bindValue(':contents', $contents);
+                    $stt->execute();
+                    $db = NULL;
+                } catch (PDOException $e) {
+                    die("エラーメッセージ：{$e->getMessage()}");
+                }
             }
-       }
+        }
     }
+
+
 
 
     ?>
