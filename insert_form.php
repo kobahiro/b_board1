@@ -15,23 +15,14 @@
     <textarea name = "contents" rows = "2" cols = "70" maxlength = "140"></textarea>
 </p>
     <?php
-    /**
-     * Created by PhpStorm.
-     * User: kobahiro
-     * Date: 2016/12/27
-     * Time: 17:35
-     */
+
     //DB接続
     require_once 'DbManager.php';
     require_once 'Encode.php';
-    if (isset($_POST["name"])) {
-        //$str = $_POST['name'];
 
-        if (strval($_POST['name']) == '' || strval($_POST['contents']) == '') {
-            echo "未入力の項目があります";
-        }else if (preg_match("/[　 \t\r\n]+/u", $_POST['name']) || preg_match("/[　 \t\r\n]+/u", $_POST['contents'])) {
-            echo "不正な入力があります";
-        }else {
+    if ($_POST["name"] == null || $_POST['contents'] == null) {
+        echo "未入力の項目があります.";
+    }else{
 
             if (mb_strlen($_POST['name']) > 30) {
                 echo "名前は30文字以内で入力してください";
@@ -52,11 +43,8 @@
                     die("エラーメッセージ：{$e->getMessage()}");
                 }
             }
-        }
+
     }
-
-
-
 
     ?>
 
@@ -69,7 +57,7 @@
         </tr>
 
         <?php
-        //require_once '../../htdocs/b_board/DbManager.php';
+
 
         try{
             $db = getDb();
