@@ -19,10 +19,10 @@
     //DB接続
     require_once 'DbManager.php';
     require_once 'Encode.php';
-
-    if ($_POST["name"] == null || $_POST['contents'] == null) {
-        echo "未入力の項目があります.";
-    }else{
+    if(isset($_POST["name"]) && isset($_POST['contents'])){
+        if ($_POST["name"] == null || $_POST['contents'] == null) {
+            echo "未入力の項目があります.";
+        }else {
 
             if (mb_strlen($_POST['name']) > 30) {
                 echo "名前は30文字以内で入力してください";
@@ -43,7 +43,7 @@
                     die("エラーメッセージ：{$e->getMessage()}");
                 }
             }
-
+        }
     }
 
     ?>
