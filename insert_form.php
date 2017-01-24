@@ -19,7 +19,7 @@
     //DB接続
     require_once 'DbManager.php';
     require_once 'Encode.php';
-    if(isset($_POST["name"]) && isset($_POST['contents'])){
+    if(isset($_POST["name"]) && isset($_POST['contents'])) {
         if ($_POST["name"] == null || $_POST['contents'] == null) {
             echo "未入力の項目があります.";
         }else {
