@@ -1,3 +1,8 @@
+<?php
+    require_once 'DbManager.php';
+    require_once 'Encode.php';
+?>
+
 <html>
 <head>
 <title>データの登録 </title>
@@ -12,13 +17,12 @@
 </p>
 <p>
     本文：(140字以内)<br />
-    <textarea name = "contents" rows = "2" cols = "70" maxlength = "140"></textarea>
+    <input type = "text" name = "contents" size = "140" maxlength = "140"/>
 </p>
     <?php
 
-    //DB接続
-    require_once 'DbManager.php';
-    require_once 'Encode.php';
+
+
     if(isset($_POST["name"]) && isset($_POST['contents'])) {
         if ($_POST["name"] == null || $_POST['contents'] == null) {
             echo "未入力の項目があります.";
@@ -31,8 +35,8 @@
             } else {
                 try {
                     $db = getDb();
-                    $name = e($_POST['name']);
-                    $contents = e($_POST['contents']);
+                    $name = $_POST['name'];
+                    $contents = $_POST['contents'];
                     $stt = $db->prepare('INSERT INTO post(name,contents) VALUES(:name, :contents)');
 
                     $stt->bindValue(':name', $name);
@@ -66,8 +70,8 @@
             while($row = $stt->fetch(PDO::FETCH_ASSOC)) {
                 ?>
                 <tr>
-                    <td><?php echo $row['name']; ?></td>
-                    <td><?php echo $row['contents']; ?></td>
+                    <td><?php echo e($row['name']); ?></td>
+                    <td><?php echo e($row['contents']); ?></td>
                 </tr>
                 <?php
             }
